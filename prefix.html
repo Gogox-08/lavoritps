@@ -1,41 +1,103 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <style>
+    body {
+      font-family: Georgia, sans-serif;
+      background-color: #4d0da1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 170px;
+    }
+
+    h2 {
+      color: #000000;
+      text-align: center;
+    }
+
+    .box {
+      background-color: #bb8df7;
+      padding: 29px;
+      border-radius: 29px;
+      box-shadow: 0 0 50px rgba(0,0,0,0.50);
+      width: 500px;
+      text-align: center;
+    }
+
+    p {
+      font-size: 18px; 
+    }
+
+    input[type="text"] {
+      width: 80%;
+      padding: 7px;
+      margin: 10px 0;
+      border: 0px solid #ccc;
+      border-radius: 10px;
+      font-size: 15px;
+    }
+
+    input[type="button"] {
+      background-color: #5d2b9e;
+      color: white;
+      border: 0px solid #ccc;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+      margin-top: 15px;
+    }
+
+    input[type="button"]:hover {
+      background-color: #804bc4;
+    }
+
+    #output {
+      margin-top: 20px;
+      font-size: 15px;
+      color: #000000;
+      background-color: #eaf0f6;
+      padding: 15px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
 <body>
+  <div class="box">
+    <h2>Creazione della subnet mask</h2>
+    <p>Inserisci il prefix number (da 0 a 32):</p>
+    <input type="text" id="prefix">
+    <input type="button" value="Calcola" onclick="calcoloSubnetMask()">
+    <div id="output"></div>
+  </div>
 
-<h2>Creazione della subnetmask in binario in base ad un prefix number</h2>
+  <script>
+    function calcoloSubnetMask() {
+      var prefix = parseInt(document.getElementById("prefix").value);
 
-<p>Inserire il prefix number:</p>
-<input type="text" id="prefix">
-<input type="button" value="Calcola" onclick="calcolaMask()">
+      if (isNaN(prefix) || prefix < 0 || prefix > 32) {
+        document.getElementById("output").innerHTML = "Il numero inserito non è compreso tra 0 e 32.";
+        return;
+      }
 
-<div id="output"></div>
+      var bits = "";
+      for (var i = 1; i <= 32; i++) {
+        if (i <= prefix) {
+          bits = bits + "1";
+        } else {
+          bits = bits + "0";
+        }
 
-<script>
-function calcolaMask() {
-  var prefix = parseInt(document.getElementById("prefix").value);
+        if (i % 8 == 0 && i != 32) {
+          bits = bits + " ";
+        }
+      }
 
-  if (isNaN(prefix) || prefix < 0 || prefix > 32) {
-    document.getElementById("output").innerHTML = "Il numero inserito non è compreso tra 0 e 32.";
-    return;
-  }
-
-  var bits = "";
-  for (var i = 1; i <= 32; i++) {
-    if (i <= prefix) {
-      bits = bits + "1";
-    } else {
-      bits = bits + "0";
+      document.getElementById("output").innerHTML =
+        "Subnet mask in binario: " + bits;
     }
-
-    if (i % 8 == 0 && i != 32) {
-      bits = bits + " ";
-    }
-  }
-
-  document.getElementById("output").innerHTML =
-    "Subnet mask in binario: " + bits;
-}
-</script>
-
+  </script>
 </body>
 </html>
