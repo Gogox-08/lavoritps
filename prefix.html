@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Creazione della subnetmask in binario in base ad un prefix number</h2>
+
+<p>Inserire il prefix number:</p>
+<input type="text" id="prefix">
+<input type="button" value="Calcola" onclick="calcolaMask()">
+
+<div id="output"></div>
+
+<script>
+function calcolaMask() {
+  var prefix = parseInt(document.getElementById("prefix").value);
+
+  if (isNaN(prefix) || prefix < 0 || prefix > 32) {
+    document.getElementById("output").innerHTML = "Il numero inserito non è compreso tra 0 e 32.";
+    return;
+  }
+
+  var bits = "";
+  for (var i = 1; i <= 32; i++) {
+    if (i <= prefix) {
+      bits = bits + "1";
+    } else {
+      bits = bits + "0";
+    }
+
+    if (i % 8 == 0 && i != 32) {
+      bits = bits + " ";
+    }
+  }
+
+  document.getElementById("output").innerHTML =
+    "Subnet mask in binario: " + bits;
+}
+</script>
+
+</body>
+</html>
