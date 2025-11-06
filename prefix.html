@@ -55,7 +55,7 @@
 
     #output {
       margin-top: 20px;
-      font-size: 15px;
+      font-size: 17px;
       color: #000000;
       background-color: #eaf0f6;
       padding: 15px;
@@ -84,20 +84,19 @@
 
       var bits = "";
       for (var i = 1; i <= 32; i++) {
-        if (i <= prefix) {
-          bits = bits + "1";
-        } else {
-          bits = bits + "0";
-        }
-
-        if (i % 8 == 0 && i != 32) {
-          bits = bits + " ";
-        }
+        bits += (i <= prefix) ? "1" : "0";
+        if (i % 8 == 0 && i != 32) bits += " ";
       }
 
+      var suffix = 32 - prefix;
+      var numHost = Math.pow(2, suffix) - 2;
+
       document.getElementById("output").innerHTML =
-        "Subnet mask in binario: " + bits;
+        "Subnet mask in binario: " + bits + "<br><br>" +
+        "Suffix: " + suffix + "<br>" +
+        "Numero totale host: 2<sup>" + suffix + "</sup> - 2 = " + numHost;
     }
   </script>
 </body>
 </html>
+
