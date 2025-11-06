@@ -85,7 +85,7 @@
       var bits = "";
       for (var i = 1; i <= 32; i++) {
         bits += (i <= prefix) ? "1" : "0";
-        if (i % 8 == 0 && i != 32) bits += " ";
+        if (i % 8 == 0 && i != 32) bits += ".";
       }
 
       var suffix = 32 - prefix;
