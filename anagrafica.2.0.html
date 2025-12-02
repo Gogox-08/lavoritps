@@ -1,6 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <style>
+    body {
+      font-family: Georgia, sans-serif;
+      background-color: #4d0da1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 70px;
+    }
+
+    h2 {
+      color: #000000;
+      text-align: center;
+    }
+
+    .box {
+      background-color: #bb8df7;
+      padding: 29px;
+      border-radius: 29px;
+      box-shadow: 0 0 50px rgba(0,0,0,0.50);
+      width: 500px;
+      text-align: left;
+    }
+
+    input[type="text"], select {
+      width: 90%;
+      padding: 7px;
+      margin: 10px 0;
+      border: 0px solid #ccc;
+      border-radius: 10px;
+      font-size: 15px;
+    }
+
+    input[type="button"] {
+      background-color: #5d2b9e;
+      color: white;
+      border: 0px solid #ccc;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+      margin-top: 15px;
+    }
+
+    input[type="button"]:hover {
+      background-color: #804bc4;
+    }
+
+    #output {
+      margin-top: 25px;
+      font-size: 17px;
+      color: #000000;
+      background-color: #eaf0f6;
+      padding: 15px;
+      border-radius: 10px;
+      width: 500px;
+    }
+  </style>
+
   <script>
     function stampa() {
       var nome = document.getElementById("nome").value;
@@ -43,18 +102,24 @@
         "<p><b>Sesso:</b> " + sesso + "</p>" +
         "<p><b>Veicolo posseduto:</b> " + listaVeicoli + "</p>" +
         "<p><b>Provincia:</b> " + provincia + "</p>" +
-        "<p><b>Sport praticato:</b> " + listaSport + "</p>";
+        "<p><b>Sport praticati:</b> " + listaSport + "</p>";
     }
   </script>
 </head>
 
-<body style="display: flex; align-items: flex-start; margin: 20px;">
-  <div style="margin-right: 60px;">
-    <h3>Dati personali:</h3>
+<body>
 
-    Nome: <input type="text" id="nome"><br><br>
-    Cognome: <input type="text" id="cognome"><br><br>
-    Indirizzo: <input type="text" id="indirizzo"><br><br>
+  <div class="box">
+    <h2>Modulo dati personali</h2>
+
+    <b>Nome:</b><br>
+    <input type="text" id="nome">
+
+    <b>Cognome:</b><br>
+    <input type="text" id="cognome">
+
+    <b>Indirizzo:</b><br>
+    <input type="text" id="indirizzo">
 
     <b>Sesso:</b><br>
     <input type="radio" name="sesso" value="Maschio"> Maschio<br>
@@ -90,6 +155,7 @@
     <input type="button" value="OK" onclick="stampa()">
   </div>
 
-  <div id="output" style="margin-left: 40px;"></div>
+  <div id="output"></div>
+
 </body>
 </html>
