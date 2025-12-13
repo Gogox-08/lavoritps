@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Georgia, sans-serif;
+      background-color: #4d0da1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 70px;
+    }
+
+    h2 {
+      color: #000000;
+      text-align: center;
+    }
+
+    .box {
+      background-color: #bb8df7;
+      padding: 29px;
+      border-radius: 29px;
+      box-shadow: 0 0 50px rgba(0,0,0,0.50);
+      width: 500px;
+      text-align: left;
+    }
+
+    input[type="text"], select {
+      width: 90%;
+      padding: 7px;
+      margin: 10px 0;
+      border-radius: 10px;
+      font-size: 15px;
+      border: 0px solid #ccc;
+    }
+
+    input[type="button"] {
+      background-color: #5d2b9e;
+      color: white;
+      border: 0px solid #ccc;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+      margin-top: 15px;
+    }
+
+    input[type="button"]:hover {
+      background-color: #804bc4;
+    }
+
+    #output {
+      margin-top: 25px;
+      font-size: 17px;
+      color: #000000;
+      background-color: #eaf0f6;
+      padding: 15px;
+      border-radius: 10px;
+      width: 500px;
+    }
+  </style>
+
+  <script>
+    var memoria = 0;
+
+    function calcola() {
+
+      var valori = [];
+      valori[0] = document.getElementById("num1").value;
+      valori[1] = document.getElementById("operazione").value;
+      valori[2] = document.getElementById("num2").value;
+
+      var a = parseFloat(valori[0]);
+      var operazione = valori[1];   
+      var b = parseFloat(valori[2]);
+      var risultato = 0;
+
+      if (operazione == "+") {
+        risultato = a + b;
+      } else if (operazione == "-") {
+        risultato = a - b;
+      } else if (operazione == "*") {
+        risultato = a * b;
+      } else if (operazione == "/") {
+        risultato = a / b;
+      } else if (operazione == "potenza") {
+        risultato = Math.pow(a, b);
+      } else if (operazione == "radice") {
+        risultato = Math.sqrt(a);
+      } else if (operazione == "percentuale") {
+        risultato = (a * b) / 100;
+      } else if (operazione == "seno") {
+        risultato = Math.sin(a);
+      } else if (operazione == "coseno") {
+        risultato = Math.cos(a);
+      } else if (operazione == "tangente") {
+        risultato = Math.tan(a);
+      }
+
+      document.getElementById("output").innerHTML =
+        "<h3>Risultato</h3>" +
+        "<p><b>Risultato:</b> " + risultato + "</p>";
+
+      memoria = risultato;   
+    }
+
+    function richiamaMemoria() {
+      document.getElementById("num1").value = memoria;
+    }
+
+    function cancellaMemoria() {
+      memoria = 0;
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="box">
+    <h2>Calcolatrice</h2>
+
+    <b>Operando 1:</b><br>
+    <input type="text" id="num1">
+
+    <b>Operazione:</b><br>
+    <select id="operazione">
+      <option value="+">Addizione</option>
+      <option value="-">Sottrazione</option>
+      <option value="*">Moltiplicazione</option>
+      <option value="/">Divisione</option>
+      <option value="potenza">Potenza</option>
+      <option value="radice">Radice quadrata</option>
+      <option value="percentuale">Percentuale</option>
+      <option value="seno">Seno</option>
+      <option value="coseno">Coseno</option>
+      <option value="tangente">Tangente</option>
+    </select>
+
+    <b>Operando 2 (se necessario):</b><br>
+    <input type="text" id="num2">
+
+    <input type="button" value="OK" onclick="calcola()">
+    <br>
+    <input type="button" value="Richiama memoria" onclick="richiamaMemoria()">
+    <input type="button" value="Cancella memoria" onclick="cancellaMemoria()">
+  </div>
+
+  <div id="output"></div>
+
+</body>
+</html>
