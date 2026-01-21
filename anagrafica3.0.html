@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Georgia, sans-serif;
+      background-color: #4d0da1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 70px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .box {
+      background-color: #bb8df7;
+      padding: 29px;
+      border-radius: 29px;
+      width: 500px;
+    }
+
+    input[type="text"] {
+      width: 90%;
+      padding: 7px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+    }
+
+    input[type="button"] {
+      background-color: #5d2b9e;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin-top: 15px;
+    }
+
+    table {
+      margin-top: 25px;
+      width: 500px;
+      background-color: #eaf0f6;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+    }
+  </style>
+
+  <script>
+    var persone = [];
+
+    function stampa() {
+
+      var nome = document.getElementById("nome").value;
+      var cognome = document.getElementById("cognome").value;
+      var eta = document.getElementById("eta").value;
+      var citta = document.getElementById("citta").value;
+
+      var persona = {
+        nome: nome,
+        cognome: cognome,
+        eta: eta,
+        citta: citta
+      };
+
+      persone.push(persona);
+
+      var testo = "";
+
+      for (var i = 0; i < persone.length; i++) {
+        testo +=
+          "<tr>" +
+          "<td>" + persone[i].nome + "</td>" +
+          "<td>" + persone[i].cognome + "</td>" +
+          "<td>" + persone[i].eta + "</td>" +
+          "<td>" + persone[i].citta + "</td>" +
+          "</tr>";
+      }
+
+      document.getElementById("tabella").innerHTML = testo;
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="box">
+    <h2>Inserimento dati</h2>
+
+    <b>Nome:</b><br>
+    <input type="text" id="nome">
+
+    <b>Cognome:</b><br>
+    <input type="text" id="cognome">
+
+    <b>Età:</b><br>
+    <input type="text" id="eta">
+
+    <b>Città:</b><br>
+    <input type="text" id="citta">
+
+    <input type="button" value="OK" onclick="stampa()">
+  </div>
+
+  <table>
+    <tr>
+      <th>Nome</th>
+      <th>Cognome</th>
+      <th>Età</th>
+      <th>Città</th>
+    </tr>
+    <tbody id="tabella"></tbody>
+  </table>
+
+</body>
+</html>
