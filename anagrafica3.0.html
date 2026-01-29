@@ -9,6 +9,7 @@
       flex-direction: column;
       align-items: center;
       margin-top: 70px;
+      color: black;
     }
 
     h2 {
@@ -21,6 +22,7 @@
       border-radius: 29px;
       width: 500px;
       box-shadow: 0 0 30px rgba(0,0,0,0.4);
+      margin-bottom: 30px;
     }
 
     input[type="text"] {
@@ -45,29 +47,16 @@
       background-color: #804bc4;
     }
 
-    table {
-      margin-top: 30px;
+    .output {
       width: 500px;
+    }
+
+    .persona {
       background-color: #bb8df7;
       border-radius: 20px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.4);
-      border-collapse: collapse;
-      overflow: hidden;
-    }
-
-    th {
-      background-color: #5d2b9e;
-      color: white;
-      padding: 12px;
-    }
-
-    td {
-      padding: 10px;
-      text-align: center;
-    }
-
-    tr:nth-child(even) {
-      background-color: #d9c2fa;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
     }
   </style>
 
@@ -75,7 +64,6 @@
     var persone = [];
 
     function stampa() {
-
       var nome = document.getElementById("nome").value;
       var cognome = document.getElementById("cognome").value;
       var eta = document.getElementById("eta").value;
@@ -94,15 +82,15 @@
 
       for (var i = 0; i < persone.length; i++) {
         testo +=
-          "<tr>" +
-          "<td>" + persone[i].nome + "</td>" +
-          "<td>" + persone[i].cognome + "</td>" +
-          "<td>" + persone[i].eta + "</td>" +
-          "<td>" + persone[i].citta + "</td>" +
-          "</tr>";
+          "<div class='persona'>" +
+          "<b>Nome:</b> " + persone[i].nome + "<br>" +
+          "<b>Cognome:</b> " + persone[i].cognome + "<br>" +
+          "<b>Età:</b> " + persone[i].eta + "<br>" +
+          "<b>Città:</b> " + persone[i].citta +
+          "</div>";
       }
 
-      document.getElementById("tabella").innerHTML = testo;
+      document.getElementById("output").innerHTML = testo;
     }
   </script>
 </head>
@@ -127,15 +115,7 @@
     <input type="button" value="OK" onclick="stampa()">
   </div>
 
-  <table>
-    <tr>
-      <th>Nome</th>
-      <th>Cognome</th>
-      <th>Età</th>
-      <th>Città</th>
-    </tr>
-    <tbody id="tabella"></tbody>
-  </table>
+  <div class="output" id="output"></div>
 
 </body>
 </html>
