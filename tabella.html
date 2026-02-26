@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Georgia, sans-serif;
+      background-color: #4d0da1;
+      display: flex;
+      justify-content: center;
+      margin-top: 70px;
+      color: black;
+    }
+
+    table {
+      background-color: #bb8df7;
+      border-collapse: collapse;
+      width: 700px;
+      text-align: center;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 10px;
+    }
+
+    th {
+      background-color: #5d2b9e;
+      color: white;
+    }
+  </style>
+
+  <script>
+    function mostra() {
+      var elenco = localStorage.getItem("elenco");
+
+      if (elenco == null) {
+        document.getElementById("tabella").innerHTML = "Nessun dato presente";
+        return;
+      }
+
+      elenco = JSON.parse(elenco);
+
+      var testo = "<table>";
+      testo += "<tr><th>Nome</th><th>Cognome</th><th>Età</th><th>Città</th></tr>";
+
+      for (var i = 0; i < elenco.length; i++) {
+        testo += "<tr>";
+        testo += "<td>" + elenco[i].nome + "</td>";
+        testo += "<td>" + elenco[i].cognome + "</td>";
+        testo += "<td>" + elenco[i].eta + "</td>";
+        testo += "<td>" + elenco[i].citta + "</td>";
+        testo += "</tr>";
+      }
+
+      testo += "</table>";
+
+      document.getElementById("tabella").innerHTML = testo;
+    }
+  </script>
+</head>
+
+<body onload="mostra()">
+
+  <div id="tabella"></div>
+
+</body>
+</html>
