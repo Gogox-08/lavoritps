@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <style>
+
+    body {
+      font-family: Georgia, sans-serif;
+      background-color: #4d0da1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+      color: black;
+    }
+
+    h2 {
+      color: white;
+      margin-bottom: 30px;
+    }
+
+    .box {
+      background-color: #bb8df7;
+      padding: 20px;
+      border-radius: 20px;
+      width: 500px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .box img {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      background-color: white;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      background-color: #5d2b9e;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 15px;
+      margin-right: 10px;
+      font-size: 15px;
+    }
+
+    .btn:hover {
+      background-color: #804bc4;
+    }
+
+    .totale {
+      color: white;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+  </style>
+
+  <script>
+
+    function caricaCarrello() {
+
+      var carrello =
+        JSON.parse(localStorage.getItem("carrello"));
+
+      if (!carrello || carrello.length == 0) {
+
+        document.getElementById("contenuto").innerHTML =
+          "<h3 style='color:white'>Carrello vuoto</h3>";
+
+        return;
+      }
+
+      var html = "";
+
+      var totale = 0;
+
+      for (var i = 0; i < carrello.length; i++) {
+
+        html +=
+
+          "<div class='box'>" +
+
+          "<img src='" + carrello[i].immagine + "'>" +
+
+          "<h3>" +
+          carrello[i].marca + " " +
+          carrello[i].modello +
+          "</h3>" +
+
+          "<p>" +
+          carrello[i].descrizione +
+          "</p>" +
+
+          "<h3>" +
+          carrello[i].prezzo +
+          " €</h3>" +
+
+          "<button class='btn' onclick='rimuoviProdotto(" + i + ")'>" +
+          "Rimuovi" +
+          "</button>" +
+
+          "</div>";
+
+        totale += parseFloat(carrello[i].prezzo);
+      }
+
+      html +=
+
+        "<div class='totale'>" +
+
+        "<h2>Totale: " + totale + " €</h2>" +
+
+        "<button class='btn' onclick='generaPDF()'>" +
+        "Stampa PDF" +
+        "</button>" +
+
+        "<button class='btn' onclick='svuotaCarrello()'>" +
+        "Svuota carrello" +
+        "</button>" +
+
+        "<button class='btn' onclick='tornaCatalogo()'>" +
+        "Torna al catalogo" +
+        "</button>" +
+
+        "</div>";
+
+      document.getElementById("contenuto").innerHTML = html;
+    }
+
+    function rimuoviProdotto(i) {
+
+      var carrello =
+        JSON.parse(localStorage.getItem("carrello"));
+
+      carrello.splice(i, 1);
+
+      localStorage.setItem(
+        "carrello",
+        JSON.stringify(carrello)
+      );
+
+      location.reload();
+    }
+
+    function generaPDF() {
+
+      var carrello =
+        JSON.parse(localStorage.getItem("carrello"));
+
+      var doc = new jspdf.jsPDF();
+
+      var y = 20;
+
+      doc.setFontSize(22);
+
+      doc.text("ORDINE CLIENTE", 20, y);
+
+      y += 15;
+
+      doc.setFontSize(12);
+
+      var data =
+        new Date().toLocaleDateString();
+
+      doc.text("Data ordine: " + data, 20, y);
+
+      y += 20;
+
+      var totale = 0;
+
+      for (var i = 0; i < carrello.length; i++) {
+
+        doc.text(
+
+          (i + 1) + ". " +
+
+          carrello[i].marca + " " +
+
+          carrello[i].modello +
+
+          " - " +
+
+          carrello[i].prezzo + " €",
+
+          20,
+          y
+        );
+
+        totale += parseFloat(carrello[i].prezzo);
+
+        y += 15;
+      }
+
+      y += 10;
+
+      doc.setFontSize(16);
+
+      doc.text(
+        "Totale ordine: " + totale + " €",
+        20,
+        y
+      );
+
+      y += 20;
+
+      doc.setFontSize(12);
+
+      doc.text(
+        "Grazie per il tuo acquisto!",
+        20,
+        y
+      );
+
+      doc.save("ordine.pdf");
+    }
+
+    function svuotaCarrello() {
+
+      localStorage.removeItem("carrello");
+
+      location.reload();
+    }
+
+    function tornaCatalogo() {
+
+      window.location.href =
+        "index.html";
+    }
+
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+
+<body onload="caricaCarrello()">
+
+  <h2>Carrello</h2>
+
+  <div id="contenuto"></div>
+
+</body>
+</html>
