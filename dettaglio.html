@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <style>
+
+    body {
+      font-family: Georgia, sans-serif;
+      background-color: #4d0da1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+      color: black;
+    }
+
+    .box {
+      background-color: #bb8df7;
+      padding: 30px;
+      border-radius: 25px;
+      width: 420px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(0,0,0,0.4);
+    }
+
+    img {
+      width: 220px;
+      height: 220px;
+      object-fit: contain;
+      background-color: white;
+      border-radius: 15px;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      background-color: #5d2b9e;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin-top: 15px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .btn:hover {
+      background-color: #804bc4;
+    }
+
+  </style>
+
+  <script>
+
+    var prodotto;
+
+    function caricaDettaglio() {
+
+      var prodotti =
+        JSON.parse(localStorage.getItem("prodotti"));
+
+      var id =
+        new URLSearchParams(window.location.search).get("id");
+
+      prodotto = prodotti[id];
+
+      document.getElementById("contenuto").innerHTML =
+
+        "<img src='" + prodotto.immagine + "'>" +
+
+        "<h2>" +
+        prodotto.marca + " " +
+        prodotto.modello +
+        "</h2>" +
+
+        "<p>" +
+        prodotto.descrizione +
+        "</p>" +
+
+        "<h3>" +
+        prodotto.prezzo +
+        " €</h3>" +
+
+        "<button class='btn' onclick='aggiungiCarrello()'>" +
+        "Aggiungi al carrello" +
+        "</button><br>" +
+
+        "<button class='btn' onclick='vaiCarrello()'>" +
+        "Vai al carrello" +
+        "</button><br>" +
+
+        "<button class='btn' onclick='tornaCatalogo()'>" +
+        "Torna al catalogo" +
+        "</button>";
+    }
+
+    function aggiungiCarrello() {
+
+      var carrello =
+        localStorage.getItem("carrello");
+
+      if (carrello == null) {
+
+        carrello = [];
+
+      } else {
+
+        carrello = JSON.parse(carrello);
+      }
+
+      carrello.push(prodotto);
+
+      localStorage.setItem(
+        "carrello",
+        JSON.stringify(carrello)
+      );
+
+      alert("Prodotto aggiunto al carrello!");
+    }
+
+    function vaiCarrello() {
+
+      window.location.href =
+        "carrello.html";
+    }
+
+    function tornaCatalogo() {
+
+      window.location.href =
+        "index.html";
+    }
+
+  </script>
+
+</head>
+
+<body onload="caricaDettaglio()">
+
+  <div class="box" id="contenuto"></div>
+
+</body>
+</html>
