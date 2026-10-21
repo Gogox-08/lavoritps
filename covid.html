@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dati COVID-19</title>
+
+    <style>
+        body {
+            font-family: Georgia, sans-serif;
+            background-color: #4d0da1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 70px;
+            color: black;
+        }
+
+        h2 {
+            text-align: center;
+            color: white;
+        }
+
+        .box {
+            background-color: #bb8df7;
+            padding: 29px;
+            border-radius: 29px;
+            width: 90%;
+            box-shadow: 0 0 30px rgba(0,0,0,0.4);
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #bb8df7;
+        }
+
+        th, td {
+            border: 1px solid #5d2b9e;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #5d2b9e;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Dati nazionali COVID-19</h2>
+
+    <div class="box">
+        <table>
+            <thead id="intestazioni">
+            </thead>
+
+            <tbody id="tabella">
+            </tbody>
+        </table>
+
+        <p id="messaggio"></p>
+    </div>
+
+    <script>
+    let richiesta = new XMLHttpRequest();
+
+    richiesta.open("GET", "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json", true);
+
+    richiesta.onload = function() {
+        if (richiesta.status == 200) {
+            let dati = JSON.parse(richiesta.responseText);
+
+            if (dati.length > 0) {
+                const obj = dati[0];
+                const numeroChiavi = Object.keys(obj).length;
+                const keys = Object.keys(obj);
+
+                let intestazioni = document.getElementById("intestazioni");
+                let tabella = document.getElementById("tabella");
+
+                let rigaIntestazioni = "<tr>";
+
+                for (let i = 0; i < numeroChiavi; i++) {
+                    rigaIntestazioni += "<th>" + keys[i] + "</th>";
+                }
+
+                rigaIntestazioni += "</tr>";
+                intestazioni.innerHTML = rigaIntestazioni;
+
+                let righe = "";
+
+                for (let i = 0; i < dati.length; i++) {
+                    righe += "<tr>";
+
+                    for (let j = 0; j < numeroChiavi; j++) {
+                        righe += "<td>" + dati[i][keys[j]] + "</td>";
+                    }
+
+                    righe += "</tr>";
+                }
+
+                tabella.innerHTML = righe;
+            }
+        } else {
+            document.getElementById("messaggio").innerHTML =
+                "Errore nel caricamento dei dati.";
+        }
+    };
+
+    richiesta.onerror = function() {
+        document.getElementById("messaggio").innerHTML =
+            "Impossibile collegarsi al server.";
+    };
+
+    richiesta.send();
+</script>
+
+</body>
+</html>
