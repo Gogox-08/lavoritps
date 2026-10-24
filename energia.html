@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Costo energia</title>
+
+    <style>
+        body {
+            font-family: Georgia, sans-serif;
+            background-color: #4d0da1;
+            color: black;
+            text-align: center;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            color: white;
+        }
+
+        .box {
+            background-color: #bb8df7;
+            padding: 25px;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 1100px;
+            margin: 25px auto;
+            box-shadow: 0 0 30px rgba(0,0,0,0.4);
+        }
+
+        canvas {
+            width: 100%;
+            height: 480px;
+            display: block;
+        }
+
+        p {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Andamento del costo dell'energia elettrica</h1>
+
+    <div class="box">
+        <p id="descrizione"></p>
+
+        <canvas id="grafico" width="1100" height="480"></canvas>
+
+        <p>Prezzo medio PUN in EUR/MWh</p>
+        <p id="fonte"></p>
+    </div>
+
+    <script>
+        let richiesta = new XMLHttpRequest();
+
+        richiesta.open("GET", "energia.json", true);
+
+        richiesta.onload = function() {
+            if (richiesta.status == 200) {
+                let dati = JSON.parse(richiesta.responseText);
+
+                document.getElementById("descrizione").innerHTML =
+                    dati.descrizione;
+
+                document.getElementById("fonte").innerHTML =
+                    "Fonte: " + dati.fonte_riferimento +
+                    " - Aggiornamento: " + dati.aggiornamento;
+
+                let valori = [];
+
+                for (let i = 0; i < dati.andamento_mensile.length; i++) {
+                    if (dati.andamento_mensile[i].mese != "Media Annuale" &&
+                        dati.andamento_mensile[i].mese != "Primo Trimestre (Media)") {
+                        valori.push(dati.andamento_mensile[i]);
+                    }
+                }
+
+                let canvas = document.getElementById("grafico");
+                let ctx = canvas.getContext("2d");
+
+                let larghezza = 1000;
+                let altezza = 380;
+                let xInizio = 60;
+                let yInizio = 30;
+                let massimo = 250;
+
+                for (let n = 0; n <= massimo; n += 50) {
+                    let y = yInizio + altezza - n / massimo * altezza;
+
+                    ctx.beginPath();
+                    ctx.moveTo(xInizio, y);
+                    ctx.lineTo(xInizio + larghezza - 60, y);
+                    ctx.stroke();
+
+                    ctx.fillText(n, 20, y + 5);
+                }
+
+                ctx.beginPath();
+                ctx.moveTo(xInizio, yInizio);
+                ctx.lineTo(xInizio, yInizio + altezza);
+                ctx.lineTo(xInizio + larghezza - 60, yInizio + altezza);
+                ctx.stroke();
+
+                ctx.beginPath();
+
+                for (let i = 0; i < valori.length; i++) {
+                    let x = xInizio +
+                        i * (larghezza - 60) / (valori.length - 1);
+
+                    let y = yInizio + altezza -
+                        valori[i].valore_medio_pun / massimo * altezza;
+
+                    if (i == 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+
+                ctx.strokeStyle = "#4d0da1";
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                for (let i = 0; i < valori.length; i++) {
+                    let x = xInizio +
+                        i * (larghezza - 60) / (valori.length - 1);
+
+                    let y = yInizio + altezza -
+                        valori[i].valore_medio_pun / massimo * altezza;
+
+                    ctx.beginPath();
+                    ctx.arc(x, y, 4, 0, 2 * Math.PI);
+                    ctx.fill();
+
+                    ctx.save();
+                    ctx.translate(x, yInizio + altezza + 15);
+                    ctx.rotate(Math.PI / 4);
+
+                    ctx.fillText(
+                        valori[i].mese.substring(0, 3) + " " +
+                        String(valori[i].anno).substring(2),
+                        0, 0
+                    );
+
+                    ctx.restore();
+                }
+            }
+        };
+
+        richiesta.send();
+    </script>
+
+</body>
+</html>
