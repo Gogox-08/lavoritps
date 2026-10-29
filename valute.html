@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Convertitore di valute</title>
+
+    <style>
+        body {
+            font-family: Georgia, sans-serif;
+            background-color: #4d0da1;
+            text-align: center;
+        }
+
+        h1 {
+            color: white;
+        }
+
+        .box {
+            background-color: #bb8df7;
+            padding: 29px;
+            border-radius: 29px;
+            width: 500px;
+            max-width: 85%;
+            margin: 70px auto;
+            box-shadow: 0 0 30px rgba(0,0,0,0.4);
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Convertitore di valute in Euro</h1>
+
+    <div class="box">
+        <p>Seleziona la valuta:</p>
+        <select id="valuta">
+            <option value="">Caricamento...</option>
+        </select>
+
+        <p>Quantità da convertire:</p>
+        <input type="text" id="quantita">
+
+        <br><br>
+        <button onclick="converti()">Converti in Euro</button>
+
+        <p id="risultato"></p>
+        <p id="messaggio"></p>
+    </div>
+
+    <script>
+        let richiesta = new XMLHttpRequest();
+
+        richiesta.open("GET",
+            "https://proxy.cors.dev/https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml",
+            true);
+
+        richiesta.onload = function() {
+            if (richiesta.status == 200 && richiesta.responseXML) {
+                let dati = richiesta.responseXML;
+                let valute = dati.getElementsByTagName("Cube");
+                let lista = document.getElementById("valuta");
+
+                lista.innerHTML = '<option value="">Seleziona...</option>';
+
+                let opzione = document.createElement("option");
+                opzione.value = "1";
+                opzione.text = "EUR";
+                lista.appendChild(opzione);
+
+                for (let i = 0; i < valute.length; i++) {
+                    if (valute[i].hasAttribute("currency")) {
+                        let codice = valute[i].getAttribute("currency");
+                        let cambio = valute[i].getAttribute("rate");
+
+                        let opzione = document.createElement("option");
+                        opzione.value = cambio;
+                        opzione.text = codice;
+                        lista.appendChild(opzione);
+                    }
+
+                    if (valute[i].hasAttribute("time")) {
+                        document.getElementById("messaggio").innerHTML =
+                            "Data dei tassi: " + valute[i].getAttribute("time");
+                    }
+                }
+            } else {
+                document.getElementById("messaggio").innerHTML =
+                    "Errore nel caricamento dei dati.";
+            }
+        };
+
+        richiesta.onerror = function() {
+            document.getElementById("messaggio").innerHTML =
+                "Impossibile caricare i dati della BCE.";
+        };
+
+        richiesta.send();
+
+        function converti() {
+            let lista = document.getElementById("valuta");
+            let quantita = document.getElementById("quantita").value;
+            let numero = Number(quantita);
+
+            if (lista.value == "" || quantita.trim() == "" ||
+                isNaN(numero) || numero < 0) {
+                document.getElementById("risultato").innerHTML =
+                    "Inserisci una valuta e una quantità valida.";
+            } else {
+                let euro = numero / Number(lista.value);
+
+                document.getElementById("risultato").innerHTML =
+                    numero + " " + lista.options[lista.selectedIndex].text +
+                    " = " + euro.toFixed(2) + " Euro";
+            }
+        }
+    </script>
+
+</body>
+</html>
