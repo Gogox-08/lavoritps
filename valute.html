@@ -50,9 +50,7 @@
     <script>
         let richiesta = new XMLHttpRequest();
 
-        richiesta.open("GET",
-            "https://proxy.cors.dev/https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml",
-            true);
+        richiesta.open("GET", "eurofxref-daily.xml", true);
 
         richiesta.onload = function() {
             if (richiesta.status == 200 && richiesta.responseXML) {
